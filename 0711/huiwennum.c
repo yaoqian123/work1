@@ -2,6 +2,7 @@
 #include<stdio.h>
 
 void main()
+/*
 {
 	int a,c;
 	printf("请输入需要判断的数字\n");
@@ -63,5 +64,26 @@ void main()
 				else
 					printf("不是回文");
 			}
+	}
+
+	}*/
+{
+	int num=123432;
+	int old=0;
+	int new=0;
+	old=num;
+	while(old != 0)
+	{
+		new*=10;   
+		new+=(old%10);   
+		old/=10;   
+	}
+	if(num==new)
+	{
+		printf("是回文\n");
+	}
+	else
+	{
+		printf("不是回文\n");
 	}
 }
