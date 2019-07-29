@@ -54,7 +54,7 @@ bool Pop(pstack ps,elemType* data)
 	assert(ps!=NULL);
 	if(IsEmpty(ps))
 		return false;
-	ps->buf[ps->top--]=*data;
+	*data=ps->buf[ps->top];
 	return true;
 }
 
