@@ -131,10 +131,10 @@ plink  fanzhuan(plink *pHead)
 //递归解法
 plink fanzhuan1(plink head)
 {   
-    if(0==!head||0==!head->next)
+    if(head!=NULL||head->next!=NULL)
         return head;
     plink newhead=fanzhuan1(head->next);
-    head->next->next = head;
+    head->next->next=head;
     head->next = NULL;
     return newhead;
 }
