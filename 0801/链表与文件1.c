@@ -52,7 +52,7 @@ void main()
 		scanf("%d",&s.age);
 		add(s,&head);
 	}
-	FILE* fp=fopen("./a.txt","w");
+	FILE* fp=fopen("./a.txt","wb");
 	if(NULL==fp)
 	{
 		perror("open fail\n");
@@ -65,7 +65,7 @@ void main()
 //		fseek(fp,1,SEEK_CUR);
 	}	
 	fclose(fp);	
-	FILE* fp1=fopen("./a.txt","r");
+	FILE* fp1=fopen("./a.txt","rb");
 	if(NULL==fp1)
 	{
 		perror("open fail\n");
