@@ -10,12 +10,12 @@
 	float s,f,t;
 void onecopy()
 {
-	int fd1=open("fork.c",O_RDONLY,0664);
+	int fd1=open("./a.txt",O_RDONLY,0664);
 	if(fd1<0)
 	{
 		printf("open fail\n");
 	}
-	int fd2=open("fork1.c",O_WRONLY|O_CREAT,0664);
+	int fd2=open("./b.txt",O_WRONLY|O_CREAT,0664);
 	char buf[1024];
 	int ilen;
 	s=clock();
@@ -31,57 +31,8 @@ void onecopy()
 //双进程拷贝
 void twocopy()
 {
-/*	int fd1=open("fork.c",O_RDONLY,0664);
-	if(fd1<0)
-	{
-		perror("open fail\n");
-	}
-	int fd2=open("fork2.c",O_CREAT|O_WRONLY,0664);
-	char buf[1]="";
-	struct stat st;
-	if(stat("fork.c",&st)<0)
-	{
-		perror("open fail");
-		return;
-	}
-	long j=0;;
-	int pid=fork();
-	int add=0;
-	printf("%ld\n",st.st_size);
-	if(pid>0)
-	{
-		s=clock();
-		while((j<=(st.st_size/2))&&(add=read(fd1,buf,1))>0)
-		{
-			write(fd2,buf,add);
-			j=j+add;
-		}
-		wait(NULL);
-		f=clock();
-		t=(f-s)/CLOCKS_PER_SEC;
-		printf("双进程拷贝时间:%f\n",t);
-	}
-	else if(pid==0)
-	{	
-		lseek(fd2,st.st_size/2,0);
-		lseek(fd1,st.st_size/2,0);
-		while((add=read(fd1,buf,1))>0)
-		{
-			write(fd2,buf,add);
-		}
-	}
-	else
-	{
-		perror("fork fail");
-		return;
-	}
-
-	close(fd1);
-	close(fd2);
-	*/
-
-	int fd=open("./fork.c",O_RDONLY,0644);
-	int fd1=open("./fork2.c",O_WRONLY|O_CREAT,0644);
+	int fd=open("./a.txt",O_RDONLY,0644);
+	int fd1=open("./c.txt",O_WRONLY|O_CREAT|O_TRUNC,0644);
 	int ilen=lseek(fd,0,SEEK_END);
 	int lenth=ilen/2;
 	char buf[1024]="";
@@ -89,6 +40,7 @@ void twocopy()
 	int pid=fork();
 	if(pid>0)
 	{
+		sleep(2);
 		s=clock();
 		int i=0;
 		while(i<=lenth && (ilen=read(fd,buf,1024))>0)
@@ -103,6 +55,10 @@ void twocopy()
 	}
 	else if(pid==0)
 	{
+		close(fd);
+		close(fd1);
+		fd=open("./a.txt",O_RDONLY,0644);
+		fd1=open("./c.txt",O_WRONLY,0644);
 		lseek(fd,lenth,0);
 		lseek(fd1,lenth,0);
 		while((ilen=read(fd,buf,1024))>0)
