@@ -19,7 +19,7 @@ typedef struct Node			//链表
 	student s;
 	struct Node* next;
 }node,*pnode;
-
+bool find(int,pnode);
 pnode creat()				//创建链表
 {
 	pnode head=NULL;
@@ -34,6 +34,8 @@ bool add(student s,pnode* phead)	//插入
 		printf("*********系统已满*********\n");
 		return false;
 	}
+	if(find(s.id,*phead))
+		return false;
 	pnew->s.id=s.id;		//数据插入
 	pnew->s.age=s.age;
 	strcpy(pnew->s.name,s.name);
@@ -83,8 +85,9 @@ bool change(int id,pstudent ps,pnode phead)
 }
 
 //通过学号寻找学生是否存在
-bool find(int id,pnode ploc)
+bool find(int id,pnode phead)
 {
+	pnode ploc=phead;
 	while(ploc!=NULL)
 	{
 		if(id==ploc->s.id)
