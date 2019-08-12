@@ -1156,7 +1156,7 @@ void choice(pnode* phead)
 //学生端
 void choice1(pnode* phead)
 {
-	int opr,flag;
+	int opr,flag=1;
 	student s={0};
 	pstudent ps=&s;
 	while(flag==1)
@@ -1170,6 +1170,7 @@ void choice1(pnode* phead)
 		  printf("*                  4:读取文件                 *\n");
                   printf("*                 0:返回上一层                *\n");
                   printf("***********************************************\n");
+
 		scanf("%d",&opr);
 		switch(opr)
 		{
@@ -1217,17 +1218,6 @@ int serect(char * buf)
 		scanf("%s",input1);
 		printf("*********请输入你的登录密码*********:\n");
 		strcpy(pwd,getpass(""));
-/*		while((ch=getchar())!='\r') 
-        	{ 	 
-        	    if((ch<'9' && ch>'0') || (ch<'Z'&&ch>'A') || (ch<'z'&&ch>'a'))	//判断是否是数字或字符  
-		    {
-        	    	putchar('*');
-        	    	pwd[p++]=ch;
-		    }
-       		 } 
-		*/ 
-		if(strcmp(input1,buf)==0)
-		{
 			if(strcmp(buf,"yao")==0)
 			{
 				if(strcmp(ch1,pwd)==0)
@@ -1242,7 +1232,6 @@ int serect(char * buf)
 					return 0;
 				}
 			}
-		}
 			i--;
 			printf("****账号或密码错误,剩余尝试次数:%d****\n",i+1);
 	}
@@ -1263,7 +1252,6 @@ void login(int i,int* flag)
         		printf("**************登录成功!**************\n");
 			printf("*************任意键继续**************\n");
 			sleep(1);
-			system("pause");
 
     		}	
     		else if(num==-1)
@@ -1280,7 +1268,6 @@ void login(int i,int* flag)
                 {
                         printf("**************登录成功!**************\n");
 			printf("*************任意键继续**************\n");
-			system("pause");
 			sleep(1);
 
                 }
@@ -1301,7 +1288,7 @@ void main()
 	{
 		system("clear");
         printf("***********************************************\n"); 
-	printf("*         学生管理系统---登录客户端           *\n");
+	printf("*         学生管理系统---登录客户端            *\n");
         printf("*                  1:教师端                   *\n");
         printf("*                  2:学生端	              *\n");
      	printf("*                 0:退出系统                  *\n");
