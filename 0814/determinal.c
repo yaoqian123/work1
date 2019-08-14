@@ -177,6 +177,32 @@ bool execline(char* argv[])
 		return false;
 	}
 }
+//kill函数
+void mykill(int i,char* argv[])
+{
+ 		if(i==1)                        //直接空格
+		{
+			printf("kill: 用法: kill [-s 信号声明 | -n 信号编号 | -信号声明] 进程号 | 任务声明 ... 或 kill -l [信号声明]\n");
+		}
+		else if(i==2)                        
+                {
+			if(strcmp(argv[1],"-l")==0)
+			{	
+                        printf("1");
+			}
+			else
+			{
+				printf("bash: kill: %s:选项需要一个参数\n",argv[1]);
+			}
+                }
+		else
+		{
+			if(strcmp(argv[1],"-9")==0)
+				exit(atoi(argv[2]));
+		}
+		
+}
+
 //父进程解析命令行
 bool commandLine(char *argv[])
 {
@@ -198,6 +224,12 @@ bool commandLine(char *argv[])
 	else if(strcmp(argv[0],"cd")==0)
 	{
 		mycd(i,argv);
+		return false;
+	}
+	//判断当前命令是否为kill
+	else if(strcmp(argv[0],"kill")==0)
+	{
+		mykill(i,argv);
 		return false;
 	}
 	else	//除了上述命令为父进程执行,其余由子进程执行
