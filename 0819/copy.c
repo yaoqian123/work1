@@ -12,7 +12,6 @@ typedef struct file
 void* threadfun(void* arg)
 {
 	pfile p=(pfile)arg;
-	pthread_mutex_lock(&mutex);
 	int fd1=open(p->a,O_RDONLY,0644);
 	if(fd1<0)
 	{
@@ -47,7 +46,6 @@ void* threadfun(void* arg)
 	}
 	close(fd1);
 	close(fd2);
-	pthread_mutex_unlock(&mutex);
 	pthread_mutex_unlock(&mutex1);
 }
 
