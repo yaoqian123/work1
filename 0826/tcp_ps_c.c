@@ -41,19 +41,27 @@ void main()
 		perror("connect fail");
 		return;
 	}
-	int ilen=0,total=0;
-	long length=0;
+	int ilen=0,total=4;
+	int length=0;
 	char name[20]="";
 	//先接收长度
-	recv(fd,&length,8,0);
-	recv(fd,name,length,0);
-	int fd1=open(name,O_WRONLY|O_CREAT|O_TRUNC,0664);
+	while(total!=0 && (ilen=recv(fd,&length,4,0))>0)
+	{
+		total-=ilen;
+	}
+	printf("%d\n",length);
+	while(length!=0 && (ilen=recv(fd,name,length,0))>0)
+	{
+		length-=ilen;
+	}
+	printf("%s\n",name);
+	int fd1=open("a.txt",O_WRONLY|O_CREAT|O_TRUNC,0664);
 	char buf[100]="";
 	//接受数据
-	while((ilen=recv(fd,buf,length,0))>0)
+	while((ilen=recv(fd,buf,100,0))>0)
 	{
 		write(fd1,buf,ilen);
-	}
+	}https://github.com/yaoqian123/work1
 	//4:关闭
 	close(fd);
 	close(fd1);

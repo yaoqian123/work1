@@ -21,7 +21,7 @@ void* threadfun(void* arg)
 	nfd = pfm -> nfd;
 	//unlock
 	pthread_mutex_unlock(&mutex);
-	long ilen=0;
+	int ilen=0;
         char buf[100];
 	int fd=open(pfm->path,O_RDONLY);
         int len;
@@ -30,8 +30,10 @@ void* threadfun(void* arg)
 	ilen=strlen(buf1);
 	//先发送长度
 	send(nfd,&ilen,sizeof(ilen),0);
+	printf("%d\n",ilen);
 	//再发送数据
 	send(nfd,buf1,ilen,0);
+	printf("%s\n",buf1);
         while((len=read(fd,buf,100))>0)
         {
 		send(nfd,buf,len,0);	
