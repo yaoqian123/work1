@@ -51,15 +51,17 @@ void main()
 		perror("connect fail");
 		return;
 	}
-	printf("输入任意内容开始传输\n");
-	char buf1[100]="";
-	scanf("%s",buf1);
 	int ilen;
-	printf("请输入接收文件的文件名\n");
+	//printf("请输入接收文件的文件名\n");
 	char name[20]="";
-	scanf("%s",name);
-	send(fd,buf1,strlen(buf1),0);
-	int fd1=open(name,O_RDWR|O_CREAT|O_TRUNC,0777);
+//	fflush(stdin);
+//	scanf("%s",name);
+	if(recv(fd,name,99,0)<=0)
+	{
+		printf("无文件传输!\n");
+		return;
+	}
+	int fd1=open(name,O_WRONLY|O_CREAT|O_TRUNC,0777);
         if(fd1<0)
         {
                 perror("open fail!\n");

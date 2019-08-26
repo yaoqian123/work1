@@ -14,22 +14,20 @@ void* threadfun(void* arg)
 	int nfd=*(int*)arg;
 	//unlock
 	pthread_mutex_unlock(&mutex);
-	int fd1=open("./a.txt",O_RDONLY);
+	char buf1[100]="a.txt";
+	int fd1=open(buf1,O_RDONLY,0664);
         if(fd1<0)
         {
                 perror("open fail!\n");
                 return NULL;
         }
         char buf[100]="";
-	char buf1[100]="";
         int len;
-	struct sockaddr_in addr;
-	socklen_t ilen=sizeof(addr);
-	recvfrom(nfd,buf1,100,0,(struct sockaddr*)&addr,&ilen);
+	send(nfd,buf1,strlen(buf1),0);
 	printf("收到信号,开始发送\n");
         while((len=read(fd1,buf,100))>0)
         {
-		sendto(nfd,buf,len,0,(struct sockaddr*)&addr,sizeof(addr));	
+		send(nfd,buf,len,0);	
         }
         close(fd1);
 	close(nfd);
