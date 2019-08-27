@@ -10,6 +10,8 @@
 #include"../msg.h"
 void main()
 {
+	while(1)
+	{
 	//1 socket
 	int fd=socket(AF_INET,SOCK_STREAM,0);
 	if(fd<0)
@@ -42,8 +44,6 @@ void main()
 		perror("connect fail");
 		return;
 	}
-while(1)
-{
 	//4发送
 	int flag=0;
 	char path[255]="";
@@ -53,7 +53,7 @@ while(1)
 	scanf("%d",&flag);
 	printf("请输入路径\n");
 	scanf("%s",path);
-	request rq={flag,"/"};
+	request rq={flag,""};
 	strcpy(rq.path,path);
 	send(fd,&rq,sizeof(rq),0);
 	//先接收状态
@@ -69,7 +69,7 @@ while(1)
 	}
 	else
 	{
-		if(flag=1)
+		if(flag==1)
 		{	
 			if(rp.type==100)
 			{
@@ -91,23 +91,20 @@ while(1)
 				printf("fail:%d\n",rp.type);
 			}
 		}
-		else if(flag=2)
+		else if(flag==2)
 		{
 			if(rp.type==200)
 			{
-				int total=4;
-				int len=0,i=0;
-				char *buf1[20]={NULL};
-				char name[20]="";
-				while(ilen >0 && (len=recv(fd,buf1,len,0))>0)
-				{
-					len-=ilen;
-				}
-				while((buf1[++i]=strtok(NULL,"/"))!=NULL)
-				{
-					strcpy(name,buf1[i]);
-				}
+
+				char* name=strrchr(path,'/');
+				if(strcmp(name,"/")!=0)
+					name++;
+				printf("%s\n",name);
 				int nfd=open(name,O_WRONLY|O_CREAT|O_TRUNC,0664);
+				if(nfd<0)
+				{
+					perror("open fail!");
+				}
 				char buf[100]="";
 				//接受数据
 				while((ilen=recv(fd,buf,100,0))>0)
@@ -122,9 +119,9 @@ while(1)
 		}
 	}
 	
-}
 	//5关闭
 	close(fd);
+	}
 }	
 
 

@@ -32,19 +32,16 @@ bool loadFile(char* root,int newfd)
 		send(newfd,&rp,sizeof(rp),0);
 		return false;
 	}
+	send(newfd,&rp,sizeof(rp),0);
 	int len;
 	char buf[100]="";
-	int ilen=sizeof(root);
-	//先发送长度
-	send(newfd,&ilen,sizeof(ilen),0);
-	//再发送数据
-	send(newfd,root,ilen,0);
         while((len=read(fd,buf,100))>0)
         {
 		send(newfd,buf,len,0);
         }
 	close(newfd);
 	close(fd);
+	return true;
 }
 //遍历文件夹
 //100路径存在  101路径是文件  102路径不存在  103权限不够 
