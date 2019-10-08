@@ -1,6 +1,8 @@
 #include<windows.h>
 #include"resource.h"
 #include<stdio.h>
+#include<commctrl.h>
+
 
 #define WM_FAIL WM_USER+1
 
@@ -10,9 +12,7 @@ BOOL CALLBACK DialogProc(
 						 WPARAM wParam,
 						 LPARAM lParam
 						 );
-BOOL InitCommonControlsEx(
-    LPINITCOMMONCONTROLSEX lpInitCtrls
-);
+
 
 DWORD WINAPI ThreadProc(
   LPVOID lpParameter   // thread data
@@ -75,6 +75,15 @@ BOOL CALLBACK DialogProc(
 			MessageBox(hwndDlg,"拷贝失败！","提示",0);
 		}
 		break;
+	case WM_INITDIALOG:
+		{
+			//设置进度条的范围
+			SendMessage(GetDlgItem(hwndDlg,IDC_JINDUTIAO),PBM_SETRANGE,0,MAKELPARAM(1,100));
+			//设置进度条的每一步的大小
+			SendMessage(GetDlgItem(hwndDlg,IDC_JINDUTIAO),PBM_SETSTEP,1,0);
+			//设置进度条的当前位置
+			SendMessage(GetDlgItem(hwndDlg,IDC_JINDUTIAO),PBM_SETPOS,0,0);
+		}
 	default:
 		return false;
 		break;
@@ -98,11 +107,22 @@ DWORD WINAPI ThreadProc(
 					{
 						SendMessage(hwndDlg,WM_FAIL,0,0);
 					}
+					unsigned int total;
+					fseek(sfp,0,SEEK_END);
+					total=ftell(sfp);
+					fseek(sfp,0,SEEK_SET);
+					//char buf1[1024]
 					char buf[1024]="";
+					//获取文件的长度
+				//	sprintf(buf1,"%d",total);
 					int ilen=0;
+					int loc=0;
 					while((ilen=fread(buf,1,1024,sfp))>0)
 					{ 
+						loc+=ilen;
+						SendMessage(GetDlgItem(hwndDlg,IDC_JINDUTIAO),PBM_SETPOS,(WPARAM)(int)((double)loc/total)*100,0);
 						fwrite(buf,1,ilen,dfp);
+					//	Sleep(1);
 					}
 					fclose(dfp);
 					fclose(sfp);
